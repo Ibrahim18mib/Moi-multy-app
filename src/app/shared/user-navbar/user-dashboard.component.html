@@ -32,6 +32,10 @@
         src="../../assets/icons/search.svg"
       />
     </div>
+    <div class="close-subapp" *ngIf="showIcon()">
+      <img src="../../assets/icons/x.svg" (click)="closeSubApp()" />
+    </div>
+
     <div class="upgrade-btn">
       <button
         class="btnUpgrade p-1 fw-bold"
@@ -57,7 +61,7 @@
     <div class="body-content"></div>
     <!--APPBODY has multiple Applications-->
     <div class="app-body">
-      <app-apps-lists ></app-apps-lists>
+      <app-apps-lists></app-apps-lists>
     </div>
     <!--APPBODY has multiple Applications  ENDS HERE-->
     <div class="app-side">

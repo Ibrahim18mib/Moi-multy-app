@@ -27,5 +27,6 @@ contextBridge.exposeInMainWorld("ipc2way", {
 //App Lists Manager
 contextBridge.exposeInMainWorld("ipcway", {
   appRouter: (data) => ipcRenderer.send('app-clicked',data),
-  closeSubApp: () => ipcRenderer.invoke('close-sub-app')
+  closeSubApp: () => ipcRenderer.invoke('close-sub-app'),
+ 
 });

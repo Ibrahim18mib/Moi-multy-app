@@ -63,6 +63,8 @@ ipcMain.on("app-clicked", (event, value) => {
 });
 
 
+
+
 ipcMain.handle('close-sub-app', () => {
   view1.setBounds({
     x: 0,

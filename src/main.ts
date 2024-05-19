@@ -10,6 +10,7 @@ declare global {
       close: () => void;
       updateMessage: (callback: () => void) => void;
       appRouter(data: any): () => void;
+      checkSubApp(data: any): () => void;
       closeSubApp: () => void;
     };
   }

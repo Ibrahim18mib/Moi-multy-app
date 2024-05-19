@@ -3,9 +3,10 @@ import {
   OnInit,
   ChangeDetectorRef,
   AfterViewInit,
-
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ApplicationsService } from '../apps-lists/applications.service';
+import { catchError } from 'rxjs';
 
 declare global {
   interface Window {
@@ -20,9 +21,6 @@ declare global {
   styleUrl: './user-dashboard.component.scss',
 })
 export class UserDashboardComponent implements OnInit, AfterViewInit {
-
- 
-
   number!: string;
   password!: string;
 
@@ -31,7 +29,13 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
   isUpdate = false;
   isDownload = false;
 
-  constructor(private route: ActivatedRoute, private cdr: ChangeDetectorRef) {
+  isSubApp = false;
+
+  constructor(
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
+    private applicationsService: ApplicationsService
+  ) {
     console.log('Constructor running');
   }
 
@@ -48,22 +52,17 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
     });
 
     console.log('NG ONINTIT');
+    let checkApp = this.applicationsService.isAppselected;
+    console.log(checkApp);
     //
   }
 
-  //triggered update
-  // updateCounter() {
-  //   console.log('into update function', window);
-
-  //   window.actions.onUpdateCounter((getNumber: string) => {
-  //     console.log('number getter', getNumber);
-  //     this.counter += Number(getNumber);
-
-  //     window.actions.setNum(this.counter);
-
-  //     this.cdr.detectChanges();
-  //   });
-  // }
+  closeSubApp() {
+    console.log('closeing sub apps clicked');
+    window.ipcway.closeSubApp();
+    this.applicationsService.isAppselected = false;
+    console.log('befre nactive subapps', this.isSubApp);
+  }
 
   ///windows ACTION methods
   closeApp(): void {
@@ -85,11 +84,9 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
 
     window.ipc2way.on('updater-Info', (isUpdateAvailable: boolean) => {
       console.log(isUpdateAvailable);
-      
 
       // Set the flag based on whether an update is available
       this.isUpdate = isUpdateAvailable;
-      
     });
 
     window.ipc2way.updateMessage();
@@ -98,7 +95,6 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
       console.log('received successfull updated from main');
       // Set the flag based on whether an update is available
       this.isUpdate = updateDone;
-      
     });
   }
 
@@ -111,5 +107,9 @@ export class UserDashboardComponent implements OnInit, AfterViewInit {
   //handling callback
   handleDownloadButtonClick() {
     console.log('Download element clicked');
+  }
+
+  showIcon() {
+    return this.applicationsService.isAppselected;
   }
 }
